@@ -19,10 +19,9 @@ export class SpacexapiService {
     return this.httpClient.get<Mission>(`${this.BASE_URL}launches`);
   }
 
-
   getMissionByNumber(flightNumber: Number) {
-    return this.httpClient.get<Mission>(`${this.BASE_URL}launches/${flightNumber}`);
+    return this.httpClient.get<Mission>(
+      `${this.BASE_URL}launches/${flightNumber}`
+    );
   }
-
-
 }
