@@ -35,12 +35,12 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
+          username: "noreply@example.com"
+          password: "dummy-password"
           subject: "Approval Needed for Branch: ${GITHUB_REF##*/}"
           body: "Approval is required for branch: ${GITHUB_REF##*/}. Approvers: ${{ env.approvers }}"
           to: ${{ env.approvers }}
-          from: "GitHub Actions"
+          from: "GitHub Actions <noreply@example.com>"
 
       - name: Post-Approval Actions
         run: |
