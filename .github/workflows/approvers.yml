@@ -19,13 +19,13 @@ jobs:
         run: |
           branch_name=${GITHUB_REF##*/}
           if echo "$branch_name" | grep -qE '^feature/'; then
-            echo "hamza.koc@deop.ca" > approvers.txt
+            echo "hmzkoc@hotmail.com" > approvers.txt
           elif echo "$branch_name" | grep -qE '^hotfix/'; then
-            echo "hamza.koc@deop.ca" > approvers.txt
+            echo "hmzkoc@hotmail.com" > approvers.txt
           elif [[ "$branch_name" == "main" ]]; then
-            echo "hamza.koc@deop.ca" > approvers.txt
+            echo "hmzkoc@hotmail.com" > approvers.txt
           else
-            echo "hamza.koc@deop.ca" > approvers.txt
+            echo "hmzkoc@hotmail.com" > approvers.txt
           fi
           approvers=$(cat approvers.txt)
           echo "approvers=$approvers" >> $GITHUB_ENV
