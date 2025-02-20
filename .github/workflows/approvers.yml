@@ -6,6 +6,7 @@ on:
       - 'feature/*'
       - 'hotfix/*'
       - 'main'
+  workflow_dispatch:
 
 jobs:
   trigger-approval:
