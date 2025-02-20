@@ -19,24 +19,28 @@ jobs:
         run: |
           branch_name=${GITHUB_REF##*/}
           if echo "$branch_name" | grep -qE '^feature/'; then
-            echo "hmzkoc@hotmail.com" > approvers.txt
+            echo "hamza.koc@deop.ca" > approvers.txt
           elif echo "$branch_name" | grep -qE '^hotfix/'; then
-            echo "hmzkoc@hotmail.com" > approvers.txt
+            echo "hamza.koc@deop.ca" > approvers.txt
           elif [[ "$branch_name" == "main" ]]; then
-            echo "hmzkoc@hotmail.com" > approvers.txt
+            echo "hamza.koc@deop.ca" > approvers.txt
           else
-            echo "hmzkoc@hotmail.com" > approvers.txt
+            echo "hamza.koc@deop.ca" > approvers.txt
           fi
           approvers=$(cat approvers.txt)
           echo "approvers=$approvers" >> $GITHUB_ENV
-
-      - name: Send Notification to Approvers
-        run: |
-          echo "Notifying approvers: ${{ env.approvers }}"
-          # Example: Send email or Slack message (add your notification logic here)
-          curl -X POST -H "Content-type: application/json" --data '{
-            "text": "Approval needed for branch: ${GITHUB_REF##*/}, Approvers: ${{ env.approvers }}"
-          }' https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+      
+      - name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Approval Needed for Branch: ${GITHUB_REF##*/}"
+          body: "Approval is required for branch: ${GITHUB_REF##*/}. Approvers: ${{ env.approvers }}"
+          to: ${{ env.approvers }}
+          from: "GitHub Actions"
 
       - name: Post-Approval Actions
         run: |
