@@ -1,0 +1,43 @@
+name: Branch-Based Approval Workflow
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - 'hotfix/*'
+      - 'main'
+
+jobs:
+  trigger-approval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Approvers Based on Branch
+        id: approvers
+        run: |
+          branch_name=${GITHUB_REF##*/}
+          if echo "$branch_name" | grep -qE '^feature/'; then
+            echo "hamza.koc@deop.com" > approvers.txt
+          elif echo "$branch_name" | grep -qE '^hotfix/'; then
+            echo "APP_DEVOPS_RELEASE_TEAM" > approvers.txt
+          elif [[ "$branch_name" == "main" ]]; then
+            echo "APP_DEVOPS_RELEASE_TEAM" > approvers.txt
+          else
+            echo "default.approver@example.com" > approvers.txt
+          fi
+          approvers=$(cat approvers.txt)
+          echo "approvers=$approvers" >> $GITHUB_ENV
+
+      - name: Send Notification to Approvers
+        run: |
+          echo "Notifying approvers: ${{ env.approvers }}"
+          # Example: Send email or Slack message (add your notification logic here)
+          curl -X POST -H "Content-type: application/json" --data '{
+            "text": "Approval needed for branch: ${GITHUB_REF##*/}, Approvers: ${{ env.approvers }}"
+          }' https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+
+      - name: Post-Approval Actions
+        run: |
+          echo "Approval completed for branch: ${GITHUB_REF##*/}"
