@@ -29,18 +29,11 @@ jobs:
           fi
           approvers=$(cat approvers.txt)
           echo "approvers=$approvers" >> $GITHUB_ENV
-      
-      - name: Send Email Notification
-        uses: dawidd6/action-send-mail@v3
+
+      - name: Request PR Approval
+        uses: hmarr/auto-approve-action@v3
         with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: "noreply@example.com"
-          password: "dummy-password"
-          subject: "Approval Needed for Branch: ${GITHUB_REF##*/}"
-          body: "Approval is required for branch: ${GITHUB_REF##*/}. Approvers: ${{ env.approvers }}"
-          to: ${{ env.approvers }}
-          from: "GitHub Actions <noreply@example.com>"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Post-Approval Actions
         run: |
