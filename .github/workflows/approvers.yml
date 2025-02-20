@@ -21,9 +21,9 @@ jobs:
           if echo "$branch_name" | grep -qE '^feature/'; then
             echo "hamza.koc@deop.com" > approvers.txt
           elif echo "$branch_name" | grep -qE '^hotfix/'; then
-            echo "APP_DEVOPS_RELEASE_TEAM" > approvers.txt
+            echo "hamza.koc@deop.com" > approvers.txt
           elif [[ "$branch_name" == "main" ]]; then
-            echo "APP_DEVOPS_RELEASE_TEAM" > approvers.txt
+            echo "hamza.koc@deop.com" > approvers.txt
           else
             echo "default.approver@example.com" > approvers.txt
           fi
